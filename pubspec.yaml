@@ -67,7 +67,7 @@ flutter:
   fonts:
     - family: Caveat
       fonts:
-       - asset: fonts/Caveat-Regular.ttf
+       - asset: assets/Caveat-Regular.ttf
         
   
  

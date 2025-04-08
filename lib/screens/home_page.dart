@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:nativewrappers/_internal/vm/lib/mirrors_patch.dart';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,10 +15,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
-  //creat an empty list of maps which represent our tasks
+
+  //Create an empty list of maps which represent our tasks
   final List<Map<String, dynamic>> tasks = [];
-  // Create a variable that captures the input of a text input
+
+  //Create a variable that captures the input of a text input
   final TextEditingController nameController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +46,19 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //function add new tasks to local state & firestore database
+  Future<void> addTask() async {
+    final taskName = nameController.text.trim();
+
+    if (taskName.isNotEmpty) {
+      final newTask = {
+        'name': taskName,
+        'completed': false,
+        'timestamp': FieldValue.serverTimestamp(),
+      };
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,8 +72,8 @@ class _HomePageState extends State<HomePage> {
               'RDP Daily Planner',
               style: TextStyle(
                 fontFamily: 'Caveat',
-                color: Colors.white,
                 fontSize: 32,
+                color: Colors.white,
               ),
             ),
           ],
@@ -70,7 +87,6 @@ class _HomePageState extends State<HomePage> {
             firstDay: DateTime(2025),
             lastDay: DateTime(2026),
           ),
-          buildAddTaskSection(nameController),
         ],
       ),
       drawer: Drawer(),
@@ -104,7 +120,6 @@ Widget buildAddTaskSection(nameController) {
 Widget buildTaskList(tasks) {
   return ListView.builder(
     physics: NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
     itemCount: tasks.length,
     itemBuilder: (context, index) {
       return ListTile(
