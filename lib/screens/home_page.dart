@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:nativewrappers/_internal/vm/lib/mirrors_patch.dart';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -79,15 +76,23 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          TableCalendar(
-            calendarFormat: CalendarFormat.month,
-            focusedDay: DateTime.now(),
-            firstDay: DateTime(2025),
-            lastDay: DateTime(2026),
-          ),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 340,
+              child: TableCalendar(
+                calendarFormat: CalendarFormat.month,
+                focusedDay: DateTime.now(),
+                firstDay: DateTime(2025),
+                lastDay: DateTime(2026),
+              ),
+            ),
+            Expanded(
+              child: Container(child: buildAddTaskSection(nameController)),
+            ),
+          ],
+        ),
       ),
       drawer: Drawer(),
     );
@@ -100,8 +105,7 @@ Widget buildAddTaskSection(nameController) {
     padding: const EdgeInsets.all(12.0),
     child: Row(
       children: [
-        Container(
-          decoration: BoxDecoration(color: Colors.white),
+        Expanded(
           child: TextField(
             maxLength: 32,
             controller: nameController,
